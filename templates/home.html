@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        <table id ="data" class = 'table table-dark'>
+            <thead>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Age
+                </th>
+            </thead>
+            <tbody>
+              {% for user in users %}
+                <tr>
+                  <td>{{ user.name }}</td>
+                  <td>{{ user.age }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+{% endblock %}
+  

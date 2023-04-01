@@ -1,0 +1,4 @@
+# Setup python, venv
+# Install requirements
+
+python app.py
