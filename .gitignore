@@ -153,3 +153,6 @@ cython_debug/
 
 ./project/
 __pycache__/
+
+#.DS_Store for Mac
+.DS_Store
