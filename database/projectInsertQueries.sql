@@ -52,4 +52,4 @@ INSERT INTO admission VALUES
 ('Bleeding disorders', 1);
 
 INSERT INTO inventory(street, state, zip_code) VALUES
-('1', 'test_inventory', 02115);
+('1', 'test_inventory', '02115');

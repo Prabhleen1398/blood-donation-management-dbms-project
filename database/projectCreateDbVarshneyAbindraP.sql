@@ -24,7 +24,7 @@ CREATE TABLE donor(
     street VARCHAR(30),
     state CHAR(30),
     zip_code CHAR(5) NOT NULL,
-    phone INT(11) UNIQUE NOT NULL,
+    phone CHAR(10) UNIQUE NOT NULL,
     gender CHAR(15) NOT NULL,
     age INT NOT NULL,
     medical_remarks TEXT(200),
