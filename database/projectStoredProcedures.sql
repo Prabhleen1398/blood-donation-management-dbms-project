@@ -5,7 +5,7 @@ delimiter //
 create procedure add_admin(username varchar(30),
 							u_password varchar(30))
 begin
-	insert into administrator values (username, u_password);
+	insert into administrator(user_name, user_password) values (username, u_password);
 end//
 delimiter ;
 
@@ -128,6 +128,7 @@ begin
 end//
 delimiter ;        
 
+
 call delete_donor('123456789');
 select * from donor;  
 
@@ -147,7 +148,11 @@ begin
 								values ((select blood_group from donor where phone = phone_num), 
 									curdate(), date_add(curdate(), INTERVAL 7 DAY), inventory_id_var, 
                                     (select donor_id from donor where phone_num = phone));
-	update inventory set blood_bag_available_quantity = blood_bag_available_quantity + 1 where inventory_id = inventory_id_var;
+	update inventory set blood_bag_available_quantity = (select count(available) 
+														  from blood_bag 
+                                                          group by inventory_id 
+														) 
+							where inventory_id = inventory_id_var;
     end if;
 end//
 delimiter ;  
@@ -164,7 +169,11 @@ create procedure refresh_inventory()
 begin
 	declare inventory_id_var int;
     set inventory_id_var = 1;
-	update inventory set blood_bag_available_quantity = (select count(bag_id) from blood_bag group by inventory_id) where inventory_id = inventory_id_var;
+	update inventory set blood_bag_available_quantity = (select count(available) 
+														  from blood_bag 
+                                                          group by inventory_id 
+														) 
+							where inventory_id = inventory_id_var;
 end//
 delimiter ;  
 
@@ -183,9 +192,12 @@ BEGIN
 								values (NEW.blood_group, 
 									curdate(), date_add(curdate(), INTERVAL 7 DAY), inventory_id_var, 
                                     NEW.donor_id);
-        UPDATE inventory 
-			SET blood_bag_available_quantity = blood_bag_available_quantity + 1 
-             where inventory_id = inventory_id_var;
+                                    
+        update inventory set blood_bag_available_quantity = (select count(available) 
+														  from blood_bag 
+                                                          group by inventory_id 
+														) 
+							where inventory_id = inventory_id_var;
 END$$
 delimiter ;
 
@@ -218,5 +230,50 @@ delimiter ;
 
 call get_blood_by_group();
 
-call create_donor('user2', 'test', 'address', 'MA', '02120', '123456789', 'F', 24, 'test remark', 'AB+', 1);
+call create_donor('user2', 'test', 'address', 'MA', '02120', '8573179963', 'F', 24, 'test remark', 'AB+', 1);
 
+select * from blood_bag;
+select * from inventory;
+
+-- stored procedure and trigger from hospital perspective
+drop procedure if exists add_hospital;
+delimiter //
+create procedure add_hospital(in hospital_name_in VARCHAR(30),
+							in street_in VARCHAR(30),
+							in state_in CHAR(30),
+							in zip_code_in CHAR(5))
+begin
+	insert into hospital(hospital_name, street, state, zip_code)
+     values
+	(hospital_name_in, street_in, state_in, zip_code_in);
+end//
+delimiter ;
+
+drop procedure if exists add_patient_to_hospital;
+delimiter //
+create procedure add_patient_to_hospital(in fname CHAR(30),
+										in lname CHAR(30),
+										in blood_group_in VARCHAR(3),
+										in remarks_in TEXT(100),
+										in hospital_id_in INT,
+										in admission_reason_in VARCHAR(30))
+begin
+	insert into patient(first_name, last_name, blood_group, remarks, hospital_id,  admission_reason)
+     values
+	(fname, lname, blood_group_in, remarks_in, hospital_id_in, admission_reason_in);
+end//
+delimiter ;
+
+call add_hospital('test_hospital', '123', 'Boston', '02115');
+call add_patient_to_hospital('test', 'patient', 'B+', 'testing', 1, 'Surgery');
+
+select blood_group_donor from blood_group_receiver where blood_group_receiver = (select blood_group from patient where patient_id = 1);
+
+delimiter $$
+CREATE TRIGGER hospital_request_blood_from_inventory
+AFTER INSERT ON paitent
+FOR EACH ROW
+BEGIN
+	
+END$$
+delimiter ;
