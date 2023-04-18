@@ -127,6 +127,7 @@ CREATE TABLE hospital_requests_blood(
 	request_id INT AUTO_INCREMENT PRIMARY KEY,
 	inventory_id INT,
     hospital_id INT,
+    bag_id INT,
     blood_group_requested varchar(3),
     blood_group_received varchar(3),
     datetime_of_dispatch date,
@@ -139,6 +140,9 @@ CREATE TABLE hospital_requests_blood(
     ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT hospital_fk
     FOREIGN KEY (hospital_id) REFERENCES hospital(hospital_id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT blood_bag_id_fk
+    FOREIGN KEY (bag_id) REFERENCES blood_bag(bag_id)
     ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT blood_group_requested_fk
     FOREIGN KEY (blood_group_requested) REFERENCES blood_group(blood_group_type)
