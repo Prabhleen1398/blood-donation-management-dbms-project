@@ -1,0 +1,126 @@
+{% extends 'donor/base.html' %} {% block cssloads %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" />
+{%endblock%} {% block content %}
+
+<section class="container-fluid">
+	<div class="px-4 py-5 px-md-5 text-center text-lg-start">
+		<div class="container">
+			<div class="row gx-lg-5 align-items-center">
+				<div class="col-lg-6 mb-5 mb-lg-0">
+					<span class="my-1 display-5 fw-bold ls-tight text-secondary">
+						Edit Existing Donor Record</span>
+				</div>
+				<div class="col-lg-6 mb-5 mb-lg-0">
+					<div class="card">
+						<div class="card-body py-5 px-md-5">
+							
+							
+							<form action="{{ url_for('editDonor',user = session['id']) }}" method="post" autocomplete="off">
+								<div class = "row">
+									<div class = "col">
+										<label for="inputState">Search Donor by Phone Number</label>
+										<input type="text" id="editDonorSearch" class="form-control" name="phoneNumber" />
+									</div>
+								</div>
+								<input type="submit" class="btn btn-primary btn-block mb-4" value="Search Donor" />
+							</form>
+							<hr class="mt-2 mb-2"/>
+							{% if msg == "User Found" %}
+							{{  user }}
+
+							
+								<form action="{{ url_for('editDonor',user = session['id']) }}" method="post" autocomplete="off">
+
+									<div class="row">
+										<div class="col">
+											<label class="form-label" for="addDonorForm">First Name</label>
+											<input type="text" id="addDonorForm" class="form-control" name="firstName" />
+										</div>
+										<div class="col">
+											<label class="form-label" for="addDonorForm">Last Name</label>
+											<input type="text" id="addDonorForm" class="form-control" name="lastName" />
+										</div>
+									</div>
+									<div class = "row">
+										<div class = "col">
+											<label class="form-label" for="addDonorForm">Blood Group</label>
+											<select id="bloodGroup" class="form-control" name = "bloodGroup">					
+												<option>A+</option>
+												<option>A-</option>
+												<option>B+</option>
+												<option>B-</option>
+												<option>AB+</option>
+												<option>AB-</option>
+												<option>O+</option>
+												<option>O-</option>
+											</select>
+											
+										</div>
+									</div>
+									<div class="row">
+										<div class="col"> <label class="form-label" for="addDonorForm">Street Address</label>
+											<input type="text" id="addDonorForm" class="form-control" name="streetAddress" />
+										</div>
+									</div>
+									<div class="row">
+										<div class="col">
+											<label for="inputState">State</label>
+											<select id="inputState" class="form-control" name = "state">
+												<option selected>Choose...</option>
+												<option>MA</option>
+											</select>
+										</div>
+										<div class="col">
+											<label class="form-label" for="addDonorForm">City</label>
+											<input type="text" id="addDonorForm" class="form-control" name="city" />
+										</div>
+										<div class="col">
+											<label class="form-label" for="addDonorForm">Pincode</label>
+											<input type="text" id="addDonorForm" class="form-control" name="pincode" />
+										</div>
+									</div>
+									<div class="row">
+										<div class="col">
+											<label class="form-label" for="addDonorForm">Phone Number</label>
+											<input type="text" id="addDonorForm" class="form-control" name="phoneNumber" />
+										</div>
+										<div class="col">
+											<label class="form-label" for="addDonorForm">Age</label>
+											<input type="text" id="addDonorForm" class="form-control" name="age" />
+										</div>
+										<div class="col">
+											<label for="inputState">Gender</label>
+											<select id="inputState" class="form-control" name = "gender">
+												<option>Male</option>
+												<option>Female</option>
+												<option>Other</option>
+											</select>
+										</div>
+									</div>
+									<div class = "row">
+										<div class="form-group">
+											<label for="exampleFormControlTextarea1">Medical Remarks</label>
+											<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name = "medicalRemarks"></textarea>
+										</div>
+									</div>
+									<br>
+									<div class="msg">{{ msg }}</div>
+									<br>
+									<input type="submit" class="btn btn-primary btn-block mb-4" value="Register" />
+								</form>
+
+							
+
+							{% endif %}
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Jumbotron -->
+</section>
+
+{% endblock %}

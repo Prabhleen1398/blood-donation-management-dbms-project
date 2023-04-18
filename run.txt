@@ -1,4 +1,11 @@
 # Setup python, venv
+1. Installing venv on windows
+download pip.
+download venv
+run python -m venv (enviorment_name)
+./(enviorment_name)/Scripts/activate
+
 # Install requirements
+pip install -r requirements.txt
 
 python app.py

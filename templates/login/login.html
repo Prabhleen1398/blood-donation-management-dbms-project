@@ -1,0 +1,114 @@
+{% extends 'login/base.html' %}
+{% block title%}
+Login Page
+{% endblock %}
+{% block cssloads%}
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" /> -->
+<!-- <style>
+	.body-container{
+		background-color:  #ec4067;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		height: 95vh;
+		width: 98vw;
+		position:relative;
+		color: #fff;
+  /* top: 10px;
+  left: 10px;
+  bottom: 10px;
+  right: 10px; */
+  overflow: auto; 
+	}
+</style> -->
+{% endblock %}
+{% block content %}
+
+<!-- <div class="container-new">
+	<div class="login">
+		<h1>Blood Donation Management System</h1>
+		<div class="links">
+			<a href="{{ url_for('login') }}" class="active">Login</a>
+			<a href="{{ url_for('register') }}">Register</a>
+		</div>
+		<form action="{{ url_for('login') }}" method="post">
+			<label for="username">
+				<i class="fas fa-user"></i>
+			</label>
+			<input type="text" name="username" placeholder="Username" id="username" required />
+			<label for="password">
+				<i class="fas fa-lock"></i>
+			</label>
+			<input type="password" name="password" placeholder="Password" id="password" required />
+			<div class="msg">{{ msg }}</div>
+			<input type="submit" value="Login" />
+		</form>
+	</div>
+</div> -->
+<!-- Section: Design Block -->
+<section class="">
+	<!-- Jumbotron -->
+	<div class="px-4 py-5 px-md-5 text-center text-lg-start ">
+	  <div class="container">
+		<div class="row gx-lg-5 align-items-center">
+		  <div class="col-lg-6 mb-5 mb-lg-0">
+			<h1 class="my-5 display-5 fw-bold ls-tight">
+			  Blood Donation Management System <br />
+			</h1>
+			
+
+		  </div>
+  
+		  <div class="col-lg-6 mb-5 mb-lg-0">
+			<div class="card">
+			  <div class="card-body py-5 px-md-5">
+				<form action="{{ url_for('login') }}" method="post">
+			 
+				  <!-- Username -->
+				  <div class="form-outline mb-4">
+					<input type="text" id="form3Example3" class="form-control" name = "username"/>
+					<label class="form-label" for="form3Example3">Username</label>
+				  </div>
+  
+				  <!-- Password input -->
+				  <div class="form-outline mb-4">
+					<input type="password" id="form3Example4" class="form-control" name = "password"/>
+					<label class="form-label" for="form3Example4">Password</label>
+				  </div>
+  
+				  <!-- Checkbox -->
+				  <!-- <div class="form-check d-flex justify-content-center mb-4">
+					<input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
+					<label class="form-check-label" for="form2Example33">
+					  Subscribe to our newsletter
+					</label>
+				  </div> -->
+  
+				  <!-- Submit button -->
+				  <button type="submit" class="btn btn-primary btn-block mb-4">
+					Login
+				  </button>
+					<hr class="solid">
+				  <!-- Register buttons -->
+				  <div class="text-center">
+
+					<p>New User? </p>
+					<a href="{{ url_for('register') }}" class="btn btn-secondary btn-block mb-4"s>Sign Up</a>
+				  </div>
+				</form>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	<!-- Jumbotron -->
+  </section>
+  <!-- Section: Design Block -->
+
+
+
+{% endblock %}
+{% block scripts %}
+{% endblock %}

@@ -152,6 +152,7 @@ cython_debug/
 #.idea/
 
 ./project/
+/project/
 __pycache__/
 
 #.DS_Store for Mac
