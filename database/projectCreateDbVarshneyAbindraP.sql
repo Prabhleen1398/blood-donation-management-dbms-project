@@ -24,7 +24,7 @@ CREATE TABLE donor(
     street VARCHAR(30),
     state CHAR(30),
     zip_code CHAR(5) NOT NULL,
-    phone INT(11) UNIQUE NOT NULL,
+    phone CHAR(10) UNIQUE NOT NULL,
     gender CHAR(15) NOT NULL,
     age INT NOT NULL,
     medical_remarks TEXT(200),
@@ -71,6 +71,7 @@ CREATE TABLE blood_bag(
     date_of_use DATE NOT NULL,
     inventory_id INT,
     donor_id INT,
+    available boolean default true,
     CONSTRAINT blood_bag_group_fk
     FOREIGN KEY (blood_group) REFERENCES blood_group(blood_group_type)
     ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -126,6 +127,9 @@ CREATE TABLE hospital_requests_blood(
 	request_id INT AUTO_INCREMENT PRIMARY KEY,
 	inventory_id INT,
     hospital_id INT,
+    blood_group_requested varchar(3),
+    blood_group_received varchar(3),
+    datetime_of_dispatch date,
     approver_id INT,
     CONSTRAINT request_approved_by_admin_fk
 	FOREIGN KEY (approver_id) REFERENCES administrator(volunteer_id)
@@ -135,5 +139,11 @@ CREATE TABLE hospital_requests_blood(
     ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT hospital_fk
     FOREIGN KEY (hospital_id) REFERENCES hospital(hospital_id)
-    ON UPDATE CASCADE ON DELETE CASCADE
+    ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT blood_group_requested_fk
+    FOREIGN KEY (blood_group_requested) REFERENCES blood_group(blood_group_type)
+    ON UPDATE RESTRICT ON DELETE RESTRICT,
+    CONSTRAINT blood_group_received_fk
+    FOREIGN KEY (blood_group_received) REFERENCES blood_group(blood_group_type)
+    ON UPDATE RESTRICT ON DELETE RESTRICT
 );
