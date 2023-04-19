@@ -31,7 +31,7 @@ def register_admin (mysql):
 
             args = [username, password]
             print(username,password)
-            cursor.callproc('add_admin',(username,password,))
+            cursor.callproc('add_admin',args)
             mysql.connection.commit()
             msg = 'You have successfully registered!'
 

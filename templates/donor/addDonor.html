@@ -33,14 +33,11 @@
 									<div class = "col">
 										<label class="form-label" for="addDonorForm">Blood Group</label>
 										<select id="bloodGroup" class="form-control" name = "bloodGroup">					
-											<option>A+</option>
-											<option>A-</option>
-											<option>B+</option>
-											<option>B-</option>
-											<option>AB+</option>
-											<option>AB-</option>
-											<option>O+</option>
-											<option>O-</option>
+											{%if bloodgroups%}
+											{% for i in bloodgroups %}
+											<option>{{i['blood_group_type']}}</option>
+											{%endfor%}
+											{%endif%}
 										</select>
 										
 									</div>

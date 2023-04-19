@@ -1,0 +1,59 @@
+{% extends 'hospital/base.html' %} {% block cssloads %}
+
+{%endblock%} {% block content %}
+
+<!-- <section class="container-fluid"> -->
+	
+
+	<!-- <div class="px-4 py-5 px-md-5 text-center text-lg-start"> -->
+		<div class="container">
+			<div class="row gx-lg-5 align-items-center">
+				<div class="col-lg-6 mb-5 mb-lg-0">
+					<span class="my-1 display-5 fw-bold ls-tight text-secondary">
+						Add a Hospital</span>
+				</div>
+				<div class="col-lg-6 mb-5 mb-lg-0">
+					<div class="card">
+						<div class="card-body py-5 px-md-5">
+
+
+							<form action="{{ url_for('addHospital',user = session['id']) }}" method="post" autocomplete="off">
+
+								<div class="row">
+									<div class="col">
+										<label class="form-label" for="addHospitalForm">Hospital Name</label>
+										<input type="text" id="addHospitalForm" class="form-control" name="hospitalName" />
+									</div>
+								<div class="row">
+									<div class="col"> <label class="form-label" for="addHospitalForm">Street Address</label>
+										<input type="text" id="addHospitalForm" class="form-control" name="streetAddress" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="col">
+										<label for="addHospitalForm">State</label>
+										<select id="addHospitalForm" class="form-control" name = "state">
+											<option selected>Choose...</option>
+											<option>MA</option>
+										</select>
+									</div>
+									<div class="col">
+										<label class="form-label" for="addHospitalForm">Pincode</label>
+										<input type="text" id="addHospitalForm" class="form-control" name="pincode" />
+									</div>
+								</div>
+								<br>
+								<div class="msg">{{ msg }}</div>
+								<br>
+								<input type="submit" class="btn btn-primary btn-block mb-4" value="Register" />
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- </div> -->
+	<!-- Jumbotron -->
+<!-- </section> -->
+
+{% endblock %}

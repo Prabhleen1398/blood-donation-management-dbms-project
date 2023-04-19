@@ -1,5 +1,6 @@
 USE bloodbankvarshneyabindrap;
 -- stored procedures
+DROP PROCEDURE IF EXISTS add_admin;
 DELIMITER //
 CREATE PROCEDURE add_admin(IN username varchar(30), 
 							IN u_password varchar(30)) 
@@ -30,7 +31,7 @@ CREATE PROCEDURE create_donor(in first_name_v CHAR(30),
                             in street_v varchar(30), 
                             in state_v CHAR(30), 
                             in zip_code_v CHAR(5), 
-                            in phone_v CHAR(10), 
+                            in phone_v VARCHAR(10), 
                             in gender_v CHAR(15), 
                             in age_v INT, 
                             in medical_remarks_v TEXT(200), 
@@ -159,6 +160,7 @@ end//
 delimiter ;  
 
 call add_blood_bag('123456789');
+call add_blood_bag('9810368362');
 select * from blood_bag;
 select * from inventory;
 
@@ -254,23 +256,45 @@ begin
 end//
 delimiter ;
 
+
+drop procedure if exists get_hospitals;
+delimiter //
+create procedure get_hospitals()
+begin
+	SELECT hospital_id,hospital_name from hospital;
+end//
+delimiter ;
+
+drop procedure if exists get_reasonofadmission;
+delimiter //
+create procedure get_reasonofadmission()
+begin
+	SELECT type_of_admission,severity from admission;
+end//
+delimiter ;
+
+call get_reasonofadmission();
+
 drop procedure if exists add_patient_to_hospital;
 delimiter //
 create procedure add_patient_to_hospital(in fname CHAR(30),
 										in lname CHAR(30),
 										in blood_group_in VARCHAR(3),
 										in remarks_in TEXT(100),
-										in hospital_id_in INT,
-										in admission_reason_in VARCHAR(30))
+										in hospital_name_in VARCHAR(30),
+										in admission_reason_in VARCHAR(30),
+                                        in severity_in int)
 begin
-	insert into patient(first_name, last_name, blood_group, remarks, hospital_id,  admission_reason)
+	
+	insert into patient(first_name, last_name, blood_group, remarks, hospital_id,  admission_reason,severity)
      values
-	(fname, lname, blood_group_in, remarks_in, hospital_id_in, admission_reason_in);
+	(fname, lname, blood_group_in, remarks_in, (SELECT hospital_id FROM hospital WHERE hospital_name = hospital_name_in), admission_reason_in,severity_in);
 end//
 delimiter ;
 
 call add_hospital('test_hospital', '123', 'Boston', '02115');
 call add_patient_to_hospital('test', 'patient', 'B+', 'testing', 1, 'Surgery');
+
 
 select * from patient;
 select * from hospital_requests_blood;
@@ -326,11 +350,13 @@ drop procedure if exists select_hospital_requests;
 delimiter //
 create procedure select_hospital_requests()
 begin
-	select request_id, inventory_id, hospital_id, bag_id, blood_group_requested, blood_group_received 
-     from hospital_requests_blood where approver_id = null;
+	select request_id, inventory_id, hospital_name, bag_id, blood_group_requested, blood_group_received 
+     from hospital_requests_blood 
+     join hospital ON hospital_requests_blood.hospital_id = hospital.hospital_id
+     where approver_id is null;
 end//
 delimiter ;
-
+	
 drop procedure if exists approve_hospital_request;
 delimiter //
 create procedure approve_hospital_request(in request_id_in int,
