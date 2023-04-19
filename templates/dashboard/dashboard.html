@@ -1,0 +1,100 @@
+{% extends 'dashboard/base.html' %} {%block cssloads%}
+<link
+	rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous" />
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+	integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+	crossorigin="anonymous"></script>
+
+{%endblock%} {% block title %}Profile - {{user['user_name']}}{% endblock %} {% block content %}
+
+	<nav
+		class="navbar  ">
+		
+			<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+				<li>
+					<div >
+						<h4>
+							Hello {{user['user_name']}}
+						</h4>
+					</div>
+				</li>
+			</ul>
+			<a
+				href="{{ url_for('logout') }}"
+				class="btn btn-outline-dark btn-lg my-2 my-sm-0"
+				>Logout</a
+			>
+		
+	</nav>
+
+	<div class = "container-fluid  mt-5">
+
+
+	<div class="card-deck ">
+		<div class="card text-center" style=" height: 20rem;">
+			<div class="card-body">
+				<h3 class="card-title">Donor</h3>
+				<p class="card-text">Click below to add a new donor into the blood bank or edit details for an existing donor.</p>		
+				<hr>
+			
+						<a href="{{ url_for('addDonor',user = session['id']) }}" class=" btn btn-light"  >Add Donor</a>
+						<a href="{{ url_for('deleteDonor',user = session['id']) }}" class=" btn btn-light" >Delete Donor</a>
+					
+						<a href="{{ url_for('editDonor',user = session['id']) }}" class=" btn btn-light"  >Edit Donor</a>
+						<a href="{{ url_for('donateBlood',user = session['id']) }}" class=" btn btn-light" >Donate Blood</a>
+					
+			</div>
+
+
+
+			
+		</div>
+
+		<div class="card text-center" style="height: 20rem;">
+			<div class="card-body">
+				<h3 class="card-title">Check Inventory</h3>
+				<p class="card-text">Click below to view current status of inventory</p>
+				<hr>
+				<a href="{{ url_for('inventory',user = session['id']) }}" class="btn btn-light">Click here</a>
+			</div>
+			
+		</div>
+		<div class="card text-center" style="height: 20rem;">
+			<div class="card-body">
+				<h3 class="card-title">Issue a Unit</h3>
+				<p class="card-text">Click below to create a new issue request of blood</p>
+				<hr>
+				<a href="{{ url_for('approveRequest',user = session['id']) }}" class="btn btn-light">Click here</a>	
+			</div>
+			
+		</div>
+
+		<div class="card text-center" style="height: 20rem;">
+			<div class="card-body">
+				<h3 class="card-title">Add Hospital /Patient</h3>
+				<p class="card-text">Click below to a Hospital or a patient</p>
+				<hr>
+				<a href="{{ url_for('addHospital',user = session['id']) }}" class=" btn btn-light"  >Add Hospital</a>
+				<a href="{{ url_for('addPatient',user = session['id']) }}" class=" btn btn-light"  >Add Patient</a>
+			</div>
+			
+		</div>
+
+	</div>
+</div>
+<!-- </section> -->
+
+{% endblock %} {% block scripts%}
+<script
+	src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+	integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+	integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+	crossorigin="anonymous"></script>
+{% endblock %}

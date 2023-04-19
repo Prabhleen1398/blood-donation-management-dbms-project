@@ -1,0 +1,94 @@
+{% extends 'hospital/base.html' %} {% block cssloads %}
+
+{%endblock%} {% block content %}
+
+<!-- <section class="container-fluid"> -->
+	
+
+	<!-- <div class="px-4 py-5 px-md-5 text-center text-lg-start"> -->
+		<div class="container">
+			<div class="row gx-lg-5 align-items-center">
+				<div class="col-lg-6 mb-5 mb-lg-0">
+					<span class="my-1 display-5 fw-bold ls-tight text-secondary">
+						Register a Patient</span>
+				</div>
+				<div class="col-lg-6 mb-5 mb-lg-0">
+					<div class="card">
+						<div class="card-body py-5 px-md-5">
+
+
+							<form action="{{ url_for('addPatient',user = session['id']) }}" method="post" autocomplete="off">
+
+								<div class="row">
+									<div class="col">
+										<label class="form-label" for="addPatientForm">First Name</label>
+										<input type="text" id="addPatientForm" class="form-control" name="firstName" />
+									</div>
+									<div class="col">
+										<label class="form-label" for="addPatientForm">Last Name</label>
+										<input type="text" id="addPatientForm" class="form-control" name="lastName" />
+									</div>
+								</div>
+								<div class = "row">
+									<div class = "col">
+										<label class="form-label" for="addPatientForm">Hospital Name</label>
+										<select id="hospitalNames" class="form-control" name = "hospitalNames">					
+											{%if hospitals%}
+											{% for i in hospitals %}
+											<option>{{i['hospital_name']}}</option>
+											{%endfor%}
+											{%endif%}
+										</select>
+										
+									</div>
+									<div class="col">
+										<label class="form-label" for="addPatientForm">Blood Group</label>
+											<select id="bloodGroup" class="form-control" name = "bloodGroup">					
+												{%if bloodgroups%}
+												{% for i in bloodgroups %}
+												<option>{{i['blood_group_type']}}</option>
+												{%endfor%}
+												{%endif%}
+											</select>
+									</div>
+								</div>
+								<div class = "row">
+									<div class="col">
+										<label class="form-label" for="addPatientForm">AddmissionReason</label>
+											<select id="reasonOfAdmission" class="form-control" name = "reasonOfAdmission">					
+												{%if reasonOfAdmission%}
+												{% for i in reasonOfAdmission %}
+												<option>{{i}}</option>
+												{%endfor%}
+												{%endif%}
+											</select>
+									</div>
+									<div class="col">
+										<label class="form-label" for="addPatientForm">Severity</label>
+										<input type="text" id="addPatientForm" class="form-control" name="severityValue" />
+									</div>
+									
+
+								</div>
+								<div class = "row">
+									<div class="form-group">
+										<label for="exampleFormControlTextarea1">Medical Remarks</label>
+										<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name = "medicalRemarks"></textarea>
+									</div>
+								</div>
+								
+								<br>
+								<div class="msg">{{ msg }}</div>
+								<br>
+								<input type="submit" class="btn btn-primary btn-block mb-4" value="Register" />
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- </div> -->
+	<!-- Jumbotron -->
+<!-- </section> -->
+
+{% endblock %}

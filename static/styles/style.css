@@ -5,9 +5,22 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-body {
-    background-color: #435165;
+body .base-container{
+    background-color: #ec4067;
     margin: 0;
+    height: 100vh;
+    width: 100vw;
+    position:relative;
+    overflow: auto; 
+    /* padding: 0%; */
+}
+.nav-rtl {
+    padding-left:40px;
+    padding-right:0px;
+}
+
+.nav-rtl li {
+    float:right !important;
 }
 .login, .register {
     width: 400px;

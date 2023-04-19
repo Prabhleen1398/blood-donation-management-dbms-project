@@ -1,0 +1,56 @@
+{% extends 'inventory/base.html' %}
+ {% block cssloads %}
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ 
+{%endblock%} 
+{% block content %}
+<div class="card">
+  <div class="card-body">
+		<div class = "chart">
+      <div style="height: 50vh; width: 50%;">
+        <canvas id="myChart"></canvas>
+    </div>
+	</div>
+  </div>
+</div>
+<script>
+ const labels = {{ labels | tojson}};
+ 
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Available Units',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: {{ data | tojson}},
+            }]
+        };
+ 
+        const config = {
+            type: 'bar',
+            data: data,
+            options: { maintainAspectRatio: false }
+        };
+ 
+        const myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+      </script>
+
+{% endblock %}
+
+{% block scripts %}
+
+
+<script>
+  
+        
+</script>
+
+
+
+
+
+{% endblock %}
