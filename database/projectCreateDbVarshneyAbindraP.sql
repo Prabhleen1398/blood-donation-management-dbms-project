@@ -24,7 +24,7 @@ CREATE TABLE donor(
     street VARCHAR(30),
     state CHAR(30),
     zip_code CHAR(5) NOT NULL,
-    phone CHAR(10) UNIQUE NOT NULL,
+    phone VARCHAR(10) UNIQUE NOT NULL,
     gender CHAR(15) NOT NULL,
     age INT NOT NULL,
     medical_remarks TEXT(200),
@@ -111,6 +111,7 @@ CREATE TABLE patient(
     remarks TEXT(100),
     hospital_id INT,
     admission_reason VARCHAR(30),
+    severity int,
     CONSTRAINT blood_group_fk
     FOREIGN KEY (blood_group) REFERENCES blood_group(blood_group_type)
     ON UPDATE RESTRICT ON DELETE RESTRICT,
@@ -118,7 +119,7 @@ CREATE TABLE patient(
     FOREIGN KEY (hospital_id) REFERENCES hospital(hospital_id)
     ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT patient_reason_fk
-    FOREIGN KEY (admission_reason) REFERENCES admission(type_of_admission)
+    FOREIGN KEY (admission_reason,severity) REFERENCES admission(type_of_admission,severity)
     ON UPDATE RESTRICT ON DELETE RESTRICT
 );
 

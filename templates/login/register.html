@@ -1,0 +1,96 @@
+{% extends 'login/base.html' %} 
+
+{% block title%}
+Registeration Page
+{% endblock %}
+
+{% block cssloads %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" />
+{%endblock%} {% block content %}
+
+
+	<!-- Jumbotron -->
+	<div class="px-4 py-5 px-md-5 text-center text-lg-start">
+		<div class="container">
+			<div class="row gx-lg-5 align-items-center">
+				<div class="col-lg-6 mb-5 mb-lg-0">
+					<span class="my-1 display-5 fw-bold ls-tight ">
+						Create a New Admin Account.
+					</span>
+				</div>
+				<div class="col-lg-6 mb-5 mb-lg-0">
+					<div class="card">
+						<div class="card-body py-5 px-md-5">
+							<form
+								action="{{ url_for('register') }}"
+								method="post"
+								autocomplete="off">
+								<div class="form-outline mb-4">
+									<div class="form-outline">
+										<input
+											type="text"
+											id="form3Example1"
+											class="form-control"
+											name="volunteer-id" />
+										<label class="form-label" for="form3Example1"
+											>Volunteer ID
+										</label>
+									</div>
+								</div>
+								<div class="form-outline mb-4">
+									<input
+										type="text"
+										id="form3Example3"
+										class="form-control"
+										name="username" />
+									<label class="form-label" for="form3Example3">Username</label>
+								</div>
+
+								<!-- Password input -->
+								<div class="form-outline mb-4">
+									<input
+										type="password"
+										id="form3Example4"
+										class="form-control"
+										name="password" />
+									<label class="form-label" for="form3Example4">Password</label>
+								</div>
+								<div class="msg">{{ msg }}</div>
+
+								<!-- Checkbox -->
+								<!-- <div class="form-check d-flex justify-content-center mb-4">
+                        <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
+                        <label class="form-check-label" for="form2Example33">
+                          Subscribe to our newsletter
+                        </label>
+                      </div> -->
+
+								<!-- Submit button -->
+								<input
+									type="submit"
+									class="btn btn-primary btn-block mb-4"
+									value="Register" />
+							</form>
+						
+                <hr class="solid">
+            
+
+							
+							<div class="text-center">
+								<p>Existing User?</p>
+								<a
+									href="{{ url_for('login') }}"
+									class="btn btn-secondary btn-block mb-4"
+									s
+									>Login</a
+								>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Jumbotron -->
+
+{% endblock %}

@@ -1,4 +1,19 @@
 # Setup python, venv
-# Install requirements
+1. Installing venv on windows
+download pip.
+download venv
+run python -m venv (enviorment_name)
+./(enviorment_name)/Scripts/activate
+2. Installing virtualenv on MAX / Linux
+  a. pip install virtualenv
+  b. cd into base directory of project 
+  c. virtualenv venv
+  d. source venv/bin/activate
 
-python app.py
+# Install requirements
+pip install -r requirements.txt
+
+#Run the program using the following command 
+#( replace mysqlUsername and mysqlpassword with your own credentials): 
+
+python app.py -u <mysqlUsername> -p <mysqlpassword>

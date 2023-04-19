@@ -1,0 +1,158 @@
+{% extends 'inventory/base.html' %}
+ {% block cssloads %}
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ 
+{%endblock%} 
+{% block content %}
+
+<section class="container-fluid">
+	<div class="px-4 py-5 px-md-5 text-center text-lg-start">
+		<div class="container">
+			<div class="row gx-lg-5 align-items-center">
+				<div class="col-lg-6 mb-5 mb-lg-0">
+					<span class="my-1 display-5 fw-bold ls-tight text-secondary">
+						Issue a New Unit of Blood</span>
+				</div>
+				<div class="col-lg-6 mb-5 mb-lg-0">
+					<div class="card">
+						<div class="card-body py-5 px-md-5">
+							
+							
+              <form action="{{ url_for('donateBlood',user = session['id']) }}" action = "" method="post" autocomplete="off">
+                <div class = "row">
+                  <div class = "col">
+                    <label for="inputState">Search Donor by Phone Number</label>
+                    <input type="text" id="donateBloodSearch" class="form-control" name="phoneNumber" />
+                  </div>
+                </div>
+                <input type="submit" name = "formButton" class="btn btn-primary btn-block mb-4" value="Search Donor" />
+              </form>
+              <br>
+              <div class="msg">{{ msg }}</div>
+              <br>
+              <hr class="mt-2 mb-2"/>
+              {% if msg == "Donor Found !" %}   
+              <form action="{{ url_for('donateBlood',user = session['id']) }}" action = "" method="post" autocomplete="off">
+                       
+                  <div class="row">
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">First Name</label>
+                    </div>
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">{{  user['first_name'] }}</label>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">Last Name</label>
+                    </div>
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">{{  user['last_name'] }}</label>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">Street Address</label>
+                    </div>
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">{{  user['street'] }}</label>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">State</label>
+                    </div>
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">{{  user['state'] }}</label>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">Zip Code</label>
+                    </div>
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">{{  user['zip_code'] }}</label>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">Phone Number</label>
+                    </div>
+                    <div class="col">
+                      <label class="form-label" type="submit" name = "phoneNumber"for="donateBloodForm">{{  user['phone'] }}</label>
+                      <input type="hidden" name="donorPhoneNumber" value="{{user['phone']}}" id="minput" />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">Gender</label>
+                    </div>
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">{{  user['gender'] }}</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">Age</label>
+                    </div>
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">{{  user['age'] }}</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">Blood Group</label>
+                    </div>
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">{{  user['blood_group'] }}</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">Date of Registration</label>
+                    </div>
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">{{  user['date_of_registration'] }}</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">Medical Remarks</label>
+                    </div>
+                    <div class="col">
+                      <label class="form-label" for="donateBloodForm">{{  user['medical_remarks'] }}</label>
+                    </div>
+                  </div>
+                
+                  <br>
+                  <br>
+                  
+
+                  <input type="submit" name = "formButton"class="btn btn-primary btn-block mb-4" value="Donate" />
+                </form>
+          
+							{% endif %}
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Jumbotron -->
+</section>
+
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}
