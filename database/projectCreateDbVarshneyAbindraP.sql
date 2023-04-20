@@ -158,23 +158,5 @@ CREATE TABLE approve_requests_archive(
     blood_group_requested varchar(3),
     blood_group_received varchar(3),
     datetime_of_dispatch date,
-    approver_id INT,
-    CONSTRAINT request_approved_by_admin_fk
-	FOREIGN KEY (approver_id) REFERENCES administrator(volunteer_id)
-    ON UPDATE CASCADE ON DELETE SET NULL,
-    CONSTRAINT inventory_approved_fk
-    FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id)
-    ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT hospital_request_approved_fk
-    FOREIGN KEY (hospital_id) REFERENCES hospital(hospital_id)
-    ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT blood_bag_approved_request_fk
-    FOREIGN KEY (bag_id) REFERENCES blood_bag(bag_id)
-    ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT blood_group_approved_requested_fk
-    FOREIGN KEY (blood_group_requested) REFERENCES blood_group(blood_group_type)
-    ON UPDATE RESTRICT ON DELETE RESTRICT,
-    CONSTRAINT blood_group_approved_received_fk
-    FOREIGN KEY (blood_group_received) REFERENCES blood_group(blood_group_type)
-    ON UPDATE RESTRICT ON DELETE RESTRICT
+    approver_id INT
 );
