@@ -9,11 +9,8 @@ BEGIN
 	VALUES (username, u_password); 
 END//
 DELIMITER ;
-CALL add_admin('testuser', 'pass123');
 
 DROP PROCEDURE IF EXISTS select_blood_group;
-
-
 DELIMITER //
 CREATE PROCEDURE select_blood_group() 
 BEGIN
@@ -56,9 +53,6 @@ END//
 DELIMITER ;
 
 -- test
-call create_donor('test', 'user', '1', 'MA', '02120', '123456789', 'F', 24, 'test remark', 'B+', 1);
-select * from donor;
-
 DROP PROCEDURE IF EXISTS update_donor_details;
 delimiter //
 CREATE PROCEDURE update_donor_details(in phone_num CHAR(10),
@@ -108,10 +102,6 @@ BEGIN
 end//
 delimiter ;
 
-call update_donor_details('8573179963', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Fit to donate');
-select * from donor;
-call update_donor_details('8573179963', NULL, NULL, NULL, NULL, NULL, NULL, 26, 'Fit to donate');
-
 drop procedure if exists delete_donor;
 delimiter //
 create procedure delete_donor(in phone_num CHAR(10))
@@ -129,12 +119,6 @@ begin
 	end if;
 end//
 delimiter ;        
-
-
-call delete_donor('123456789');
-select * from donor;  
-
-call delete_donor('123');        
 
 DROP PROCEDURE IF EXISTS add_blood_bag;
 delimiter //
@@ -159,13 +143,6 @@ begin
 end//
 delimiter ;  
 
-call add_blood_bag('123456789');
-call add_blood_bag('9810368362');
-select * from blood_bag;
-select * from inventory;
-
-call add_blood_bag('1234');
-
 drop procedure if exists refresh_inventory;
 delimiter //
 create procedure refresh_inventory(in inventory_id_in int)
@@ -178,10 +155,6 @@ begin
 end//
 delimiter ;  
 
-call refresh_inventory(1);
-select * from inventory; 
-
-select * from blood_bag;
 
 DROP TRIGGER IF EXISTS insert_blood_bag_after_adding_donor;
 delimiter $$
@@ -208,13 +181,6 @@ BEGIN
 END$$
 delimiter ;
 
-call create_donor('test1', 'user2', '12', 'MA', '02120', '8573179963', 'F', 24, 'test remark 2', 'B+', 1);
-SELECT * FROM DONOR;
-
-select * from donor;
-select * from blood_bag;
-select * from inventory;
-
 drop procedure if exists get_current_blood_stock_at_inventory;
 delimiter //
 create procedure get_current_blood_stock_at_inventory()
@@ -222,8 +188,6 @@ begin
 	select inventory_id, blood_bag_available_quantity from inventory;
 end//
 delimiter ; 
-
-call get_current_blood_stock_at_inventory();
 
 drop procedure if exists get_blood_by_group;
 delimiter //
@@ -234,13 +198,6 @@ begin
      group by inventory_id, blood_group;
 end//
 delimiter ;
-
-call get_blood_by_group();
-
-call create_donor('user2', 'test', 'address', 'MA', '02120', '8573179963', 'F', 24, 'test remark', 'AB+', 1);
-
-select * from blood_bag;
-select * from inventory;
 
 -- stored procedure and trigger from hospital perspective
 drop procedure if exists add_hospital;
@@ -273,7 +230,6 @@ begin
 end//
 delimiter ;
 
-call get_reasonofadmission();
 
 drop procedure if exists add_patient_to_hospital;
 delimiter //
@@ -291,17 +247,6 @@ begin
 	(fname, lname, blood_group_in, remarks_in, (SELECT hospital_id FROM hospital WHERE hospital_name = hospital_name_in), admission_reason_in,severity_in);
 end//
 delimiter ;
-
-call add_hospital('test_hospital', '123', 'Boston', '02115');
-call add_patient_to_hospital('test', 'patient', 'B+', 'testing', 1, 'Surgery');
-
-
-select * from patient;
-select * from hospital_requests_blood;
-
-select * from blood_bag;
-select * from inventory;
-
 DROP TRIGGER IF EXISTS hospital_request_blood_from_inventory;
 delimiter $$
 CREATE TRIGGER hospital_request_blood_from_inventory
@@ -310,8 +255,8 @@ FOR EACH ROW
 BEGIN
 declare bag_id_chosen int;
 	declare severity_var int;
-    select severity into severity_var from admission 
-    where type_of_admission = (select NEW.admission_reason from patient where patient_id = NEW.patient_id);
+    
+    select NEW.severity into severity_var;
     
     if severity_var < 5 then
     
@@ -323,13 +268,10 @@ declare bag_id_chosen int;
             and available = true
 		order by date_of_use limit 1;
 		
-        if bag_id_chosen is null then
-        
+        if bag_id_chosen is null then        
 			SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Sorry, no blood units currently available';
-		
         else
-        
 			insert into hospital_requests_blood(inventory_id, hospital_id, bag_id, blood_group_requested, blood_group_received)
 			 values 
 			((select inventory_id from blood_bag where bag_id = bag_id_chosen), 
@@ -337,14 +279,11 @@ declare bag_id_chosen int;
 			(select blood_group from blood_bag where bag_id = bag_id_chosen));    
 			
 			update blood_bag set available = false where bag_id = bag_id_chosen;
-		
         end if;
 	end if;
 END$$
 delimiter ;
 
-
-select * from hospital_requests_blood;
 
 drop procedure if exists select_hospital_requests;
 delimiter //
