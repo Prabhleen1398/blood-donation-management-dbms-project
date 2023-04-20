@@ -64,7 +64,7 @@ CREATE TABLE `admission` (
 
 LOCK TABLES `admission` WRITE;
 /*!40000 ALTER TABLE `admission` DISABLE KEYS */;
-INSERT INTO `admission` VALUES ('Accident',1),('Accident',8),('Anemia',4),('Anemia',7),('Bleeding disorders',1),('General Checkup',10),('Surgery',2);
+INSERT INTO `admission` VALUES ('Accident',1),('Accident',2),('Accident',3),('Accident',4),('Accident',5),('Accident',6),('Accident',7),('Accident',8),('Accident',9),('Accident',10),('Anemia',1),('Anemia',2),('Anemia',3),('Anemia',4),('Anemia',5),('Anemia',6),('Anemia',7),('Anemia',8),('Anemia',9),('Anemia',10),('Bleeding disorders',1),('Bleeding disorders',2),('Bleeding disorders',3),('Bleeding disorders',4),('Bleeding disorders',5),('Bleeding disorders',6),('Bleeding disorders',7),('Bleeding disorders',8),('Bleeding disorders',9),('Bleeding disorders',10),('General Checkup',5),('General Checkup',6),('General Checkup',7),('General Checkup',8),('General Checkup',9),('General Checkup',10),('Surgery',1),('Surgery',2),('Surgery',3),('Surgery',4),('Surgery',5),('Surgery',6),('Surgery',7),('Surgery',8),('Surgery',9),('Surgery',10);
 /*!40000 ALTER TABLE `admission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -120,7 +120,7 @@ CREATE TABLE `blood_bag` (
   CONSTRAINT `blood_bag_group_fk` FOREIGN KEY (`blood_group`) REFERENCES `blood_group` (`blood_group_type`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `blood_donor_fk` FOREIGN KEY (`donor_id`) REFERENCES `donor` (`donor_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `inventory_blood_fk` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`inventory_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +129,7 @@ CREATE TABLE `blood_bag` (
 
 LOCK TABLES `blood_bag` WRITE;
 /*!40000 ALTER TABLE `blood_bag` DISABLE KEYS */;
-INSERT INTO `blood_bag` VALUES (1,'B+','2023-04-19','2023-04-26',1,1,0),(2,'B+','2023-04-19','2023-04-26',1,2,0),(3,'B+','2023-04-20','2023-04-27',1,1,1);
+INSERT INTO `blood_bag` VALUES (1,'B+','2023-04-19','2023-04-26',1,1,0),(2,'B+','2023-04-19','2023-04-26',1,2,0),(3,'B+','2023-04-20','2023-04-27',1,1,0),(4,'O+','2023-04-20','2023-04-27',1,3,1),(5,'O+','2023-04-20','2023-04-27',1,3,1),(6,'O+','2023-04-20','2023-04-27',1,3,1),(7,'O+','2023-04-20','2023-04-27',1,3,1);
 /*!40000 ALTER TABLE `blood_bag` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -245,7 +245,7 @@ CREATE TABLE `donor` (
   KEY `donor_registered_by_fk` (`registrar_id`),
   CONSTRAINT `donor_bg_fk` FOREIGN KEY (`blood_group`) REFERENCES `blood_group` (`blood_group_type`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `donor_registered_by_fk` FOREIGN KEY (`registrar_id`) REFERENCES `administrator` (`volunteer_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -254,7 +254,7 @@ CREATE TABLE `donor` (
 
 LOCK TABLES `donor` WRITE;
 /*!40000 ALTER TABLE `donor` DISABLE KEYS */;
-INSERT INTO `donor` VALUES (1,'test1','user2','12','MA','02120','8573179963','F',24,'test remark 2','B+','2023-04-19',1),(2,'test1','user2','12','MA','02120','98987865','F',24,'test remark 2','B+','2023-04-19',1);
+INSERT INTO `donor` VALUES (1,'test1','user2','12','MA','02120','8573179963','F',24,'test remark 2','B+','2023-04-19',1),(2,'test1','user2','12','MA','02120','98987865','F',24,'test remark 2','B+','2023-04-19',1),(3,'user2','test','address','MA','02120','8575447133','F',24,'test remark','O+','2023-04-20',1);
 /*!40000 ALTER TABLE `donor` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -333,7 +333,7 @@ CREATE TABLE `hospital_requests_blood` (
   CONSTRAINT `blood_group_requested_fk` FOREIGN KEY (`blood_group_requested`) REFERENCES `blood_group` (`blood_group_type`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `hospital_fk` FOREIGN KEY (`hospital_id`) REFERENCES `hospital` (`hospital_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `hospital_inventory_fk` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`inventory_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -342,6 +342,7 @@ CREATE TABLE `hospital_requests_blood` (
 
 LOCK TABLES `hospital_requests_blood` WRITE;
 /*!40000 ALTER TABLE `hospital_requests_blood` DISABLE KEYS */;
+INSERT INTO `hospital_requests_blood` VALUES (3,1,1,3,'B+','B+');
 /*!40000 ALTER TABLE `hospital_requests_blood` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -369,7 +370,7 @@ CREATE TABLE `inventory` (
 
 LOCK TABLES `inventory` WRITE;
 /*!40000 ALTER TABLE `inventory` DISABLE KEYS */;
-INSERT INTO `inventory` VALUES (1,'1','test_inventory','02115',3);
+INSERT INTO `inventory` VALUES (1,'1','test_inventory','02115',4);
 /*!40000 ALTER TABLE `inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -396,7 +397,7 @@ CREATE TABLE `patient` (
   CONSTRAINT `blood_group_fk` FOREIGN KEY (`blood_group`) REFERENCES `blood_group` (`blood_group_type`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `patient_hospital_fk` FOREIGN KEY (`hospital_id`) REFERENCES `hospital` (`hospital_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `patient_reason_fk` FOREIGN KEY (`admission_reason`, `severity`) REFERENCES `admission` (`type_of_admission`, `severity`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -405,7 +406,7 @@ CREATE TABLE `patient` (
 
 LOCK TABLES `patient` WRITE;
 /*!40000 ALTER TABLE `patient` DISABLE KEYS */;
-INSERT INTO `patient` VALUES (1,'user','test','B+','test add',1,'anemia',4);
+INSERT INTO `patient` VALUES (1,'user','test','B+','test add',1,'anemia',4),(2,'user','test','B+','test add',1,'anemia',4);
 /*!40000 ALTER TABLE `patient` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -717,14 +718,14 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_blood_by_group`()
 begin
-	select inventory_id, bg.blood_group_type, count(blood_group) as available_count 
-		from(select inventory_id, blood_group, count(available) 
+	select inventory_id, bg.blood_group_type, t.c as available_count 
+		from(select inventory_id, blood_group, count(available) as c
 			from blood_bag as count_bg
 			group by blood_group, available, inventory_id
 				having available = 1) as t
 		right join blood_group bg
 		on bg.blood_group_type = t.blood_group
-		group by bg.blood_group_type, inventory_id
+		group by bg.blood_group_type, inventory_id, t.c
 		order by available_count desc;
 end ;;
 DELIMITER ;
@@ -846,8 +847,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `select_hospital_requests`()
 begin
 	select request_id, inventory_id, hospital_name, bag_id, blood_group_requested, blood_group_received 
      from hospital_requests_blood 
-     join hospital ON hospital_requests_blood.hospital_id = hospital.hospital_id
-     where approver_id is null;
+     join hospital ON hospital_requests_blood.hospital_id = hospital.hospital_id;
 end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -924,4 +924,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-20  0:44:42
+-- Dump completed on 2023-04-20 10:35:01
