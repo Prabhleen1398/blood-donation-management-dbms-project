@@ -150,7 +150,7 @@ CREATE TABLE hospital_requests_blood(
 
 DROP TABLE IF EXISTS approve_requests_archive;
 CREATE TABLE approve_requests_archive(
-	approved_request_id INT AUTO_INCREMENT,
+	approved_request_id INT AUTO_INCREMENT PRIMARY KEY,
     request_id INT,
     inventory_id INT,
     hospital_id INT,
@@ -159,8 +159,6 @@ CREATE TABLE approve_requests_archive(
     blood_group_received varchar(3),
     datetime_of_dispatch date,
     approver_id INT,
-    CONSTRAINT archive_pk
-    PRIMARY KEY (approved_request_id, request_id),
     CONSTRAINT request_approved_by_admin_fk
 	FOREIGN KEY (approver_id) REFERENCES administrator(volunteer_id)
     ON UPDATE CASCADE ON DELETE SET NULL,
