@@ -9,6 +9,9 @@
 	integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
 	crossorigin="anonymous"></script>
 
+	<style>
+
+	</style>
 {%endblock%} {% block title %}Profile - {{user['user_name']}}{% endblock %} {% block content %}
 
 	<nav
@@ -25,7 +28,7 @@
 			</ul>
 			<a
 				href="{{ url_for('logout') }}"
-				class="btn btn-outline-dark btn-lg my-2 my-sm-0"
+				class="btn btn-outline btn-lg my-2 my-sm-0"
 				>Logout</a
 			>
 		
@@ -41,11 +44,11 @@
 				<p class="card-text">Click below to add a new donor into the blood bank or edit details for an existing donor.</p>		
 				<hr>
 			
-						<a href="{{ url_for('addDonor',user = session['id']) }}" class=" btn btn-light"  >Add Donor</a>
-						<a href="{{ url_for('deleteDonor',user = session['id']) }}" class=" btn btn-light" >Delete Donor</a>
+						<a href="{{ url_for('addDonor',user = session['id']) }}" class=" btn "  >Add Donor</a>
+						<a href="{{ url_for('deleteDonor',user = session['id']) }}" class=" btn " >Delete Donor</a>
 					
-						<a href="{{ url_for('editDonor',user = session['id']) }}" class=" btn btn-light"  >Edit Donor</a>
-						<a href="{{ url_for('donateBlood',user = session['id']) }}" class=" btn btn-light" >Donate Blood</a>
+						<a href="{{ url_for('editDonor',user = session['id']) }}" class=" btn "  >Edit Donor</a>
+						<a href="{{ url_for('donateBlood',user = session['id']) }}" class=" btn " >Donate Blood</a>
 					
 			</div>
 
@@ -59,7 +62,7 @@
 				<h3 class="card-title">Check Inventory</h3>
 				<p class="card-text">Click below to view current status of inventory</p>
 				<hr>
-				<a href="{{ url_for('inventory',user = session['id']) }}" class="btn btn-light">Click here</a>
+				<a href="{{ url_for('inventory',user = session['id']) }}" class="btn ">Click here</a>
 			</div>
 			
 		</div>
@@ -68,7 +71,7 @@
 				<h3 class="card-title">Issue a Unit</h3>
 				<p class="card-text">Click below to create a new issue request of blood</p>
 				<hr>
-				<a href="{{ url_for('approveRequest',user = session['id']) }}" class="btn btn-light">Click here</a>	
+				<a href="{{ url_for('approveRequest',user = session['id']) }}" class="btn ">Click here</a>	
 			</div>
 			
 		</div>
@@ -78,8 +81,10 @@
 				<h3 class="card-title">Add Hospital /Patient</h3>
 				<p class="card-text">Click below to a Hospital or a patient</p>
 				<hr>
-				<a href="{{ url_for('addHospital',user = session['id']) }}" class=" btn btn-light"  >Add Hospital</a>
-				<a href="{{ url_for('addPatient',user = session['id']) }}" class=" btn btn-light"  >Add Patient</a>
+				<a href="{{ url_for('addHospital',user = session['id']) }}" class=" btn "  >Add Hospital</a>
+				<a href="{{ url_for('addPatient',user = session['id']) }}" class=" btn "  >Add Patient</a>
+				<a href="{{ url_for('newRequest',user = session['id']) }}" class=" btn "  >New Donation Request</a>
+
 			</div>
 			
 		</div>
