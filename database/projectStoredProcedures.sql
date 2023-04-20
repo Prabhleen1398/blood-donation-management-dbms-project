@@ -193,8 +193,14 @@ drop procedure if exists get_blood_by_group;
 delimiter //
 create procedure get_blood_by_group()
 begin
+<<<<<<< Updated upstream
 	select inventory_id, bg.blood_group_type, t.c as available_count 
 		from(select inventory_id, blood_group, count(available) as c
+=======
+<<<<<<< Updated upstream
+	select inventory_id, bg.blood_group_type, count(blood_group) as available_count 
+		from(select inventory_id, blood_group, count(available) 
+>>>>>>> Stashed changes
 			from blood_bag as count_bg
 			group by blood_group, available, inventory_id
 				having available = 1) as t
@@ -202,6 +208,11 @@ begin
 		on bg.blood_group_type = t.blood_group
 		group by bg.blood_group_type, inventory_id, t.c
 		order by available_count desc;
+=======
+	select inventory_id, blood_group, count(blood_group) as count
+     from blood_bag 
+     group by inventory_id, blood_group;
+>>>>>>> Stashed changes
 end//
 delimiter ;
 
@@ -253,6 +264,7 @@ begin
 	(fname, lname, blood_group_in, remarks_in, (SELECT hospital_id FROM hospital WHERE hospital_name = hospital_name_in), admission_reason_in,severity_in);
 end//
 delimiter ;
+
 DROP TRIGGER IF EXISTS hospital_request_blood_from_inventory;
 delimiter $$
 CREATE TRIGGER hospital_request_blood_from_inventory
@@ -326,7 +338,13 @@ create procedure select_hospital_requests()
 begin
 	select request_id, inventory_id, hospital_name, bag_id, blood_group_requested, blood_group_received 
      from hospital_requests_blood 
+<<<<<<< Updated upstream
      join hospital ON hospital_requests_blood.hospital_id = hospital.hospital_id;
+=======
+     join hospital ON hospital_requests_blood.hospital_id = hospital.hospital_id
+     where approver_id is null
+     order by request_id;
+>>>>>>> Stashed changes
 end//
 delimiter ;
 	

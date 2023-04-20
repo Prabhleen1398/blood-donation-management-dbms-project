@@ -5,8 +5,17 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+.card{
+    background-color: #FAEDF0;
+    color : #292C6D;
+}
+.a .btn{
+    background-color: #FAEDF0;
+    color : #292C6D;
+}
 body .base-container{
-    background-color: #ec4067;
+    background-color: #EC255A;
+    color : #161853;
     margin: 0;
     height: 100vh;
     width: 100vw;

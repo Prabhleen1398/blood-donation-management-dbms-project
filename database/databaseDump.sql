@@ -848,6 +848,7 @@ begin
 	select request_id, inventory_id, hospital_name, bag_id, blood_group_requested, blood_group_received 
      from hospital_requests_blood 
      join hospital ON hospital_requests_blood.hospital_id = hospital.hospital_id;
+
 end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
