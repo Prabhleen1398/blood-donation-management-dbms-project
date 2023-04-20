@@ -193,9 +193,11 @@ drop procedure if exists get_blood_by_group;
 delimiter //
 create procedure get_blood_by_group()
 begin
-	select inventory_id, blood_group, count(blood_group) 
-     from blood_bag 
-     group by inventory_id, blood_group;
+	select inventory_id, bg.blood_group_type, count(b.blood_group) 
+     from blood_bag b
+     right join blood_group bg
+     on b.blood_group = bg.blood_group_type
+     group by inventory_id, b.blood_group, bg.blood_group_type;
 end//
 delimiter ;
 
