@@ -32,7 +32,7 @@ app.config['MYSQL_DB'] = 'bloodbankvarshneyabindrap'
 # Intialize MySQL
 mysql = MySQL(app)
 
-
+@app.route("/")
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # Output message if something goes wrong...
@@ -225,12 +225,10 @@ def addPatient(user):
         hospitals = cursor.fetchall()
         print(hospitals)
         cursor.nextset()
-        
         cursor.callproc('select_blood_group')
         bloodgroups = cursor.fetchall()
         print(bloodgroups)
         cursor.nextset()
-
         cursor.callproc('get_reasonofadmission')
         reasonOfAdmission = cursor.fetchall()
         newROAset=set()
@@ -274,16 +272,21 @@ def inventory(user):
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.callproc('get_blood_by_group')
         bloodbagData = cursor.fetchall()
-        cursor.nextset()        
         print(bloodbagData)
+        cursor.nextset()     
+        cursor.execute('SELECT * from blood_bag')
+        allBloodBags = cursor.fetchall()
+        cursor.nextset()
+        print(allBloodBags)
+        
         labels=[]
         data = []
         for i in range(len(bloodbagData)):
-            labels.append(bloodbagData[i]['blood_group'])
-            data.append(bloodbagData[i]['count(blood_group)'])
+            labels.append(bloodbagData[i]['blood_group_type'])
+            data.append(bloodbagData[i]['available_count'])
    
         
-        return render_template('inventory/inventory.html',bloodbagData = bloodbagData,data = data , labels = labels)
+        return render_template('inventory/inventory.html',bloodbagData = bloodbagData,data = data , labels = labels,allBloodBags = allBloodBags)
     return redirect(url_for('login'))
 
 @app.route('/profile/<user>/approveRequest', methods=['GET','POST'])
@@ -293,39 +296,47 @@ def approveRequest(user):
         cursor.callproc('select_hospital_requests')
         pendingRequests = cursor.fetchall()
         cursor.nextset() 
+        print(pendingRequests)
+        mysql.connection.commit()
         table_columns= list(pendingRequests[0].keys())
         table_columns = ["Request id","inventory_id","hospital_id","bag_id","requested","received"]
         msg = ""
         if(request.method == "POST"):
-            print("Approving Request ID %s",request.form['requestID'])
-            try:
+                print("Approving Request ID %s",request.form['requestID'])
+                try:
 
-                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                print(request.form['requestID'],user)
-                print(type(request.form['requestID']),type(user))
-                cursor.callproc('approve_hospital_request',[int(request.form['requestID']) , int(user),])
-                mysql.connection.commit() 
-                msg = "Request Approved Successfully !"
-            except Exception as e:
-                msg = e.args
-
-
-
-            
+                    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    print(request.form['requestID'],user)
+                    print(type(request.form['requestID']),type(user))
+                    cursor.callproc('approve_hospital_request',[int(request.form['requestID']) , int(user),])
+                    mysql.connection.commit() 
+                    msg = "Request Approved Successfully !"
+                except Exception as e:
+                    msg = e.args
         return render_template('hospital/approveRequest.html',msg=  msg,table_columns = table_columns,pendingRequests = pendingRequests)
     return redirect(url_for('login'))
 
-@app.route("/home")
-@app.route("/")
-def home():
-    users = [
-                {'name':'Aditya',
-                 'age' : 23},
-                 {'name':'ABC',
-                 'age' : 24}
-            ]
+
+@app.route('/profile/<user>/newRequest', methods=['GET','POST'])
+def newRequest(user):
+    if 'loggedin' in session and (user ==session['id']):
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT * from patient")
+        allPatients = cursor.fetchall()
+        cursor.nextset()
+        print(allPatients)
+        msg = ""
+        if request.method == "POST":
+            try:
+                cursor.callproc('add_additional_blood_bag',[int(request.form['patientID'])])
+                mysql.connection.commit()
+                msg = "New Request Initiated"
+            except Exception as e:
+                msg = e.args[1]
+        return render_template('hospital/newRequest.html',msg = msg, allPatients = allPatients)
     
-    return render_template('login/login.html',users= users)
+    return redirect(url_for('login'))
+        
 
 @app.route('/logout')
 def logout():
