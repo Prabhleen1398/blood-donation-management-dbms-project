@@ -80,6 +80,7 @@ def user(user):
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM administrator WHERE volunteer_id = %s', (session['id'],))
         user = cursor.fetchone()
+        cursor.close()
         return render_template('dashboard/dashboard.html', user=user)
     return redirect(url_for('login'))
 
@@ -91,6 +92,7 @@ def addDonor(user,msg= ""):
         cursor.callproc('select_blood_group',[])
         bloodgroups = cursor.fetchall()
         cursor.nextset()
+        cursor.close()
         if request.method =='POST':
             args,msg = addADonor(request,user)
             if(args != None or msg =="Donor Registration Successful"):
@@ -98,6 +100,7 @@ def addDonor(user,msg= ""):
                     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                     cursor.callproc('create_donor',args)
                     mysql.connection.commit()
+                    cursor.close()
                 except Exception as e:
                     print(e)
                     msg = e.args[1]
@@ -119,6 +122,7 @@ def editDonor(user,msg = ""):
                 cursor.callproc('select_blood_group',[])
                 bloodgroups = cursor.fetchall()
                 print(user)
+                cursor.close()
                 if user:
                     msg = "User Found"
                 else: 
@@ -131,6 +135,7 @@ def editDonor(user,msg = ""):
                 cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 cursor.callproc('update_donor_details',args)
                 mysql.connection.commit()
+                cursor.close()
                 msg = "User details updated successfully!"
                 return render_template('donor/editDonor.html', user=user,msg = msg)    
 
@@ -148,6 +153,7 @@ def deleteDonor(user):
             try:
                 cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 cursor.callproc('delete_donor',args)
+                cursor.close()
                 msg = "User deleted successfully!"
                 mysql.connection.commit()            
             except Exception as e:
@@ -170,6 +176,7 @@ def donateBlood(user,phoneNumber = ""):
                 cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 cursor.execute('SELECT * FROM donor WHERE phone = %s', (phoneNumber,))
                 user = cursor.fetchone()
+                cursor.close()
                 if(user):
                     msg = "Donor Found !"
                     return render_template("inventory/issueUnit.html",user = user,msg = msg)
@@ -185,6 +192,7 @@ def donateBlood(user,phoneNumber = ""):
                 cursor.callproc('add_blood_bag', (phoneNumber,))
                 print("Blood donated" , phoneNumber)
                 mysql.connection.commit()  
+                cursor.close()
                 msg = user + "Donated Blood!"
         return render_template("inventory/issueUnit.html",user = user,msg = msg)
         
@@ -207,6 +215,7 @@ def addHospital(user):
             try:
                 cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 cursor.callproc('add_hospital',args)
+                cursor.close()
                 msg = "Hospital Added successfully!"
                 mysql.connection.commit()            
             except Exception as e:
@@ -237,7 +246,7 @@ def addPatient(user):
             newROAset.add(i['type_of_admission'])
         print(newROAset)
         cursor.nextset()
-
+        cursor.close()
 
         if request.method == 'POST':
             try:
@@ -249,6 +258,7 @@ def addPatient(user):
                 cursor.callproc('add_patient_to_hospital',args)
                 msg = "Patient Added successfully!"
                 mysql.connection.commit()           
+                cursor.close()
                 print("Adding Patient..")
 
                 
@@ -278,6 +288,7 @@ def inventory(user):
         allBloodBags = cursor.fetchall()
         cursor.nextset()
         print(allBloodBags)
+        cursor.close()
         
         labels=[]
         data = []
@@ -298,6 +309,7 @@ def approveRequest(user):
         cursor.nextset() 
         print(pendingRequests)
         mysql.connection.commit()
+        cursor.close()
         table_columns= list(pendingRequests[0].keys())
         table_columns = ["Request id","inventory_id","hospital_id","bag_id","requested","received"]
         msg = ""
@@ -310,6 +322,7 @@ def approveRequest(user):
                     print(type(request.form['requestID']),type(user))
                     cursor.callproc('approve_hospital_request',[int(request.form['requestID']) , int(user),])
                     mysql.connection.commit() 
+                    cursor.close()
                     msg = "Request Approved Successfully !"
                 except Exception as e:
                     msg = e.args
@@ -324,12 +337,15 @@ def newRequest(user):
         cursor.execute("SELECT * from patient")
         allPatients = cursor.fetchall()
         cursor.nextset()
+        cursor.close()
         print(allPatients)
         msg = ""
         if request.method == "POST":
             try:
+                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 cursor.callproc('add_additional_blood_bag',[int(request.form['patientID'])])
                 mysql.connection.commit()
+                cursor.close()
                 msg = "New Request Initiated"
             except Exception as e:
                 msg = e.args[1]
