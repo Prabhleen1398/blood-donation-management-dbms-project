@@ -193,11 +193,15 @@ drop procedure if exists get_blood_by_group;
 delimiter //
 create procedure get_blood_by_group()
 begin
-	select inventory_id, bg.blood_group_type, count(b.blood_group) 
-     from blood_bag b
-     right join blood_group bg
-     on b.blood_group = bg.blood_group_type
-     group by inventory_id, b.blood_group, bg.blood_group_type;
+	select inventory_id, bg.blood_group_type, count(blood_group) as available_count 
+		from(select inventory_id, blood_group, count(available) 
+			from blood_bag as count_bg
+			group by blood_group, available, inventory_id
+				having available = 1) as t
+		right join blood_group bg
+		on bg.blood_group_type = t.blood_group
+		group by bg.blood_group_type, inventory_id
+		order by available_count desc;
 end//
 delimiter ;
 
@@ -255,7 +259,7 @@ CREATE TRIGGER hospital_request_blood_from_inventory
 AFTER INSERT ON patient
 FOR EACH ROW
 BEGIN
-declare bag_id_chosen int;
+	declare bag_id_chosen int;
 	declare severity_var int;
     
     select NEW.severity into severity_var;
@@ -286,6 +290,35 @@ declare bag_id_chosen int;
 END$$
 delimiter ;
 
+drop procedure if exists add_additional_blood_bag;
+delimiter //
+create procedure add_additional_blood_bag(in patient_id_in int)
+begin
+	declare bag_id_chosen int;
+    select bag_id into bag_id_chosen 
+		from blood_bag where blood_group = any( 
+			select blood_group_donor 
+			from blood_group_receiver 
+			where blood_group_receiver = (select blood_group from patient where patient_id = patient_id_in))
+            and available = true
+		order by date_of_use limit 1;
+		
+        if bag_id_chosen is null then        
+			SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Sorry, no blood units currently available';
+        else
+			insert into hospital_requests_blood(inventory_id, hospital_id, bag_id, blood_group_requested, blood_group_received)
+			 values 
+			((select inventory_id from blood_bag where bag_id = bag_id_chosen), 
+			(select hospital_id from patient where patient_id = patient_id_in), 
+            bag_id_chosen,
+            (select blood_group from patient where patient_id = patient_id_in), 
+			(select blood_group from blood_bag where bag_id = bag_id_chosen));    
+			
+			update blood_bag set available = false where bag_id = bag_id_chosen;
+        end if;
+END//
+delimiter ;
 
 drop procedure if exists select_hospital_requests;
 delimiter //
@@ -303,12 +336,19 @@ delimiter //
 create procedure approve_hospital_request(in request_id_in int,
 										 in approver_id_in int)
 begin
-	update hospital_requests_blood set approver_id = approver_id_in, 
-										datetime_of_dispatch = current_timestamp()
-									where request_id = request_id_in;
+	declare approve_id int;
+    
+	insert into approve_requests_archive(request_id, inventory_id, hospital_id, bag_id, blood_group_requested, blood_group_received)
+		 (select * from hospital_requests_blood where hospital_requests_blood.request_id = request_id_in);
+    
+    select approved_request_id into approve_id from approve_requests_archive where request_id = request_id_in;
+    
+	update approve_requests_archive set approver_id = approver_id_in, datetime_of_dispatch = current_timestamp()
+     where approved_request_id = approve_id;
+     
+    delete from hospital_requests_blood where request_id = request_id_in;
 end//
 delimiter ;
-
 
 DROP TRIGGER IF EXISTS update_inventory_after_blood_bag_updated;
 delimiter $$

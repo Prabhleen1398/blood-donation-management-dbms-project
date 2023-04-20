@@ -131,11 +131,6 @@ CREATE TABLE hospital_requests_blood(
     bag_id INT,
     blood_group_requested varchar(3),
     blood_group_received varchar(3),
-    datetime_of_dispatch date,
-    approver_id INT,
-    CONSTRAINT request_approved_by_admin_fk
-	FOREIGN KEY (approver_id) REFERENCES administrator(volunteer_id)
-    ON UPDATE CASCADE ON DELETE SET NULL,
     CONSTRAINT hospital_inventory_fk
     FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id)
     ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -149,6 +144,39 @@ CREATE TABLE hospital_requests_blood(
     FOREIGN KEY (blood_group_requested) REFERENCES blood_group(blood_group_type)
     ON UPDATE RESTRICT ON DELETE RESTRICT,
     CONSTRAINT blood_group_received_fk
+    FOREIGN KEY (blood_group_received) REFERENCES blood_group(blood_group_type)
+    ON UPDATE RESTRICT ON DELETE RESTRICT
+);
+
+DROP TABLE IF EXISTS approve_requests_archive;
+CREATE TABLE approve_requests_archive(
+	approved_request_id INT AUTO_INCREMENT,
+    request_id INT,
+    inventory_id INT,
+    hospital_id INT,
+    bag_id INT,
+    blood_group_requested varchar(3),
+    blood_group_received varchar(3),
+    datetime_of_dispatch date,
+    approver_id INT,
+    CONSTRAINT archive_pk
+    PRIMARY KEY (approved_request_id, request_id),
+    CONSTRAINT request_approved_by_admin_fk
+	FOREIGN KEY (approver_id) REFERENCES administrator(volunteer_id)
+    ON UPDATE CASCADE ON DELETE SET NULL,
+    CONSTRAINT inventory_approved_fk
+    FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT hospital_request_approved_fk
+    FOREIGN KEY (hospital_id) REFERENCES hospital(hospital_id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT blood_bag_approved_request_fk
+    FOREIGN KEY (bag_id) REFERENCES blood_bag(bag_id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT blood_group_approved_requested_fk
+    FOREIGN KEY (blood_group_requested) REFERENCES blood_group(blood_group_type)
+    ON UPDATE RESTRICT ON DELETE RESTRICT,
+    CONSTRAINT blood_group_approved_received_fk
     FOREIGN KEY (blood_group_received) REFERENCES blood_group(blood_group_type)
     ON UPDATE RESTRICT ON DELETE RESTRICT
 );
