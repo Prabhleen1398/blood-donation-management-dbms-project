@@ -286,7 +286,7 @@ def inventory(user):
         return render_template('inventory/inventory.html',bloodbagData = bloodbagData,data = data , labels = labels)
     return redirect(url_for('login'))
 
-@app.route('/profile/<user>/approveRequest', methods=['GET'])
+@app.route('/profile/<user>/approveRequest', methods=['GET','POST'])
 def approveRequest(user):
     if 'loggedin' in session and (user ==session['id']):
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -295,9 +295,24 @@ def approveRequest(user):
         cursor.nextset() 
         table_columns= list(pendingRequests[0].keys())
         table_columns = ["Request id","inventory_id","hospital_id","bag_id","requested","received"]
+        msg = ""
+        if(request.method == "POST"):
+            print("Approving Request ID %s",request.form['requestID'])
+            try:
+
+                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                print(request.form['requestID'],user)
+                print(type(request.form['requestID']),type(user))
+                cursor.callproc('approve_hospital_request',[int(request.form['requestID']) , int(user),])
+                mysql.connection.commit() 
+                msg = "Request Approved Successfully !"
+            except Exception as e:
+                msg = e.args
+
+
 
             
-        return render_template('hospital/approveRequest.html',table_columns = table_columns,pendingRequests = pendingRequests)
+        return render_template('hospital/approveRequest.html',msg=  msg,table_columns = table_columns,pendingRequests = pendingRequests)
     return redirect(url_for('login'))
 
 @app.route("/home")
