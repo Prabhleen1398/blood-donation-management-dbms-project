@@ -1,10 +1,20 @@
-# Setup python, venv
+# Setup python, venv and mysql
+0. install mysql 
+sudo apt-get install mysql
+OR 
+brew install mysql
+for MAC 
+
 1. Installing venv on windows
-download pip.
+download pip
+
 download venv
+
+
 run python -m venv (enviorment_name)
 ./(enviorment_name)/Scripts/activate
-2. Installing virtualenv on MAX / Linux
+
+2. Installing virtualenv on MAC / Linux
   a. pip install virtualenv
   b. cd into base directory of project 
   c. virtualenv venv
