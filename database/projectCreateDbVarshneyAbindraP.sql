@@ -131,11 +131,6 @@ CREATE TABLE hospital_requests_blood(
     bag_id INT,
     blood_group_requested varchar(3),
     blood_group_received varchar(3),
-    datetime_of_dispatch date,
-    approver_id INT,
-    CONSTRAINT request_approved_by_admin_fk
-	FOREIGN KEY (approver_id) REFERENCES administrator(volunteer_id)
-    ON UPDATE CASCADE ON DELETE SET NULL,
     CONSTRAINT hospital_inventory_fk
     FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id)
     ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -151,4 +146,17 @@ CREATE TABLE hospital_requests_blood(
     CONSTRAINT blood_group_received_fk
     FOREIGN KEY (blood_group_received) REFERENCES blood_group(blood_group_type)
     ON UPDATE RESTRICT ON DELETE RESTRICT
+);
+
+DROP TABLE IF EXISTS approve_requests_archive;
+CREATE TABLE approve_requests_archive(
+	approved_request_id INT AUTO_INCREMENT PRIMARY KEY,
+    request_id INT,
+    inventory_id INT,
+    hospital_id INT,
+    bag_id INT,
+    blood_group_requested varchar(3),
+    blood_group_received varchar(3),
+    datetime_of_dispatch date,
+    approver_id INT
 );
