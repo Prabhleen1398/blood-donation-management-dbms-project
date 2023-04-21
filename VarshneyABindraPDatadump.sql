@@ -86,7 +86,7 @@ CREATE TABLE `approve_requests_archive` (
   `datetime_of_dispatch` date DEFAULT NULL,
   `approver_id` int DEFAULT NULL,
   PRIMARY KEY (`approved_request_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,6 +95,7 @@ CREATE TABLE `approve_requests_archive` (
 
 LOCK TABLES `approve_requests_archive` WRITE;
 /*!40000 ALTER TABLE `approve_requests_archive` DISABLE KEYS */;
+INSERT INTO `approve_requests_archive` VALUES (1,5,1,2,5,'B+','O+','2023-04-20',1);
 /*!40000 ALTER TABLE `approve_requests_archive` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -120,7 +121,7 @@ CREATE TABLE `blood_bag` (
   CONSTRAINT `blood_bag_group_fk` FOREIGN KEY (`blood_group`) REFERENCES `blood_group` (`blood_group_type`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `blood_donor_fk` FOREIGN KEY (`donor_id`) REFERENCES `donor` (`donor_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `inventory_blood_fk` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`inventory_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +130,7 @@ CREATE TABLE `blood_bag` (
 
 LOCK TABLES `blood_bag` WRITE;
 /*!40000 ALTER TABLE `blood_bag` DISABLE KEYS */;
-INSERT INTO `blood_bag` VALUES (1,'B+','2023-04-19','2023-04-26',1,1,0),(2,'B+','2023-04-19','2023-04-26',1,2,0),(3,'B+','2023-04-20','2023-04-27',1,1,0),(4,'O+','2023-04-20','2023-04-27',1,3,1),(5,'O+','2023-04-20','2023-04-27',1,3,1),(6,'O+','2023-04-20','2023-04-27',1,3,1),(7,'O+','2023-04-20','2023-04-27',1,3,1);
+INSERT INTO `blood_bag` VALUES (1,'B+','2023-04-19','2023-04-26',1,1,0),(2,'B+','2023-04-19','2023-04-26',1,2,0),(3,'B+','2023-04-20','2023-04-27',1,1,0),(4,'O+','2023-04-20','2023-04-27',1,3,0),(5,'O+','2023-04-20','2023-04-27',1,3,0),(6,'O+','2023-04-20','2023-04-27',1,3,0),(7,'O+','2023-04-20','2023-04-27',1,3,1),(8,'B+','2023-04-20','2023-04-27',1,5,1),(9,'B+','2023-04-20','2023-04-27',1,5,1);
 /*!40000 ALTER TABLE `blood_bag` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -245,7 +246,7 @@ CREATE TABLE `donor` (
   KEY `donor_registered_by_fk` (`registrar_id`),
   CONSTRAINT `donor_bg_fk` FOREIGN KEY (`blood_group`) REFERENCES `blood_group` (`blood_group_type`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `donor_registered_by_fk` FOREIGN KEY (`registrar_id`) REFERENCES `administrator` (`volunteer_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -254,7 +255,7 @@ CREATE TABLE `donor` (
 
 LOCK TABLES `donor` WRITE;
 /*!40000 ALTER TABLE `donor` DISABLE KEYS */;
-INSERT INTO `donor` VALUES (1,'test1','user2','12','MA','02120','8573179963','F',24,'test remark 2','B+','2023-04-19',1),(2,'test1','user2','12','MA','02120','98987865','F',24,'test remark 2','B+','2023-04-19',1),(3,'user2','test','address','MA','02120','8575447133','F',24,'test remark','O+','2023-04-20',1);
+INSERT INTO `donor` VALUES (1,'test1','user2','12','MA','02120','8573179963','F',24,'test remark 2','B+','2023-04-19',1),(2,'test1','user2','12','MA','02120','98987865','F',24,'test remark 2','B+','2023-04-19',1),(3,'user2','test','address','MA','02120','8575447133','F',24,'test remark','O+','2023-04-20',1),(5,'prabh','trial','abcd','MA','02120','9545001007','Male',24,'updated','B+','2023-04-20',1);
 /*!40000 ALTER TABLE `donor` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -295,7 +296,7 @@ CREATE TABLE `hospital` (
   `zip_code` char(5) NOT NULL,
   PRIMARY KEY (`hospital_id`),
   UNIQUE KEY `street` (`street`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -304,7 +305,7 @@ CREATE TABLE `hospital` (
 
 LOCK TABLES `hospital` WRITE;
 /*!40000 ALTER TABLE `hospital` DISABLE KEYS */;
-INSERT INTO `hospital` VALUES (1,'hospital 2','111','MA','02115');
+INSERT INTO `hospital` VALUES (1,'hospital 2','111','MA','02115'),(2,'hosp 1','abfds','MA','02120');
 /*!40000 ALTER TABLE `hospital` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -333,7 +334,7 @@ CREATE TABLE `hospital_requests_blood` (
   CONSTRAINT `blood_group_requested_fk` FOREIGN KEY (`blood_group_requested`) REFERENCES `blood_group` (`blood_group_type`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `hospital_fk` FOREIGN KEY (`hospital_id`) REFERENCES `hospital` (`hospital_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `hospital_inventory_fk` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`inventory_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -342,7 +343,7 @@ CREATE TABLE `hospital_requests_blood` (
 
 LOCK TABLES `hospital_requests_blood` WRITE;
 /*!40000 ALTER TABLE `hospital_requests_blood` DISABLE KEYS */;
-INSERT INTO `hospital_requests_blood` VALUES (3,1,1,3,'B+','B+');
+INSERT INTO `hospital_requests_blood` VALUES (3,1,1,3,'B+','B+'),(4,1,1,4,'B+','O+'),(6,1,2,6,'B+','O+');
 /*!40000 ALTER TABLE `hospital_requests_blood` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -370,7 +371,7 @@ CREATE TABLE `inventory` (
 
 LOCK TABLES `inventory` WRITE;
 /*!40000 ALTER TABLE `inventory` DISABLE KEYS */;
-INSERT INTO `inventory` VALUES (1,'1','test_inventory','02115',4);
+INSERT INTO `inventory` VALUES (1,'1','test_inventory','02115',3);
 /*!40000 ALTER TABLE `inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -397,7 +398,7 @@ CREATE TABLE `patient` (
   CONSTRAINT `blood_group_fk` FOREIGN KEY (`blood_group`) REFERENCES `blood_group` (`blood_group_type`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `patient_hospital_fk` FOREIGN KEY (`hospital_id`) REFERENCES `hospital` (`hospital_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `patient_reason_fk` FOREIGN KEY (`admission_reason`, `severity`) REFERENCES `admission` (`type_of_admission`, `severity`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -406,7 +407,7 @@ CREATE TABLE `patient` (
 
 LOCK TABLES `patient` WRITE;
 /*!40000 ALTER TABLE `patient` DISABLE KEYS */;
-INSERT INTO `patient` VALUES (1,'user','test','B+','test add',1,'anemia',4),(2,'user','test','B+','test add',1,'anemia',4);
+INSERT INTO `patient` VALUES (1,'user','test','B+','test add',1,'anemia',4),(2,'user','test','B+','test add',1,'anemia',4),(3,'test','patient','B+','need urgent blood',2,'Accident',1);
 /*!40000 ALTER TABLE `patient` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -453,6 +454,10 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Dumping events for database 'bloodbankvarshneyabindrap'
+--
 
 --
 -- Dumping routines for database 'bloodbankvarshneyabindrap'
@@ -848,7 +853,6 @@ begin
 	select request_id, inventory_id, hospital_name, bag_id, blood_group_requested, blood_group_received 
      from hospital_requests_blood 
      join hospital ON hospital_requests_blood.hospital_id = hospital.hospital_id;
-
 end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -925,4 +929,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-20 10:35:01
+-- Dump completed on 2023-04-21 15:29:08

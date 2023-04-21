@@ -19,7 +19,7 @@ python app.py -u <mysqlUsername> -p <mysqlpassword>
     
     
 ### --------------------------------------------------------------------------------------------------------------------------
-## Setting up a virtual Enviorment
+## Setting up a virtual Environment
 ## This is an optional step. The program should work as long as the correct versions of dependencies are installed.
 ## Windows users might have to download PIP in order to setup a virtual env
   PIP can be installed by following the instructions at : https://www.liquidweb.com/kb/install-pip-windows/
