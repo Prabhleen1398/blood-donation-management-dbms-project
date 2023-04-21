@@ -1,29 +1,39 @@
-# Setup python, venv and mysql
-0. install mysql 
-sudo apt-get install mysql
-OR 
-brew install mysql
-for MAC 
 
-1. Installing venv on windows
-download pip
+## This project requires Python and MYSql to be installed on the local host. 
+## please keep your mysql username and password handy, as they will be required to run the application    
+### WINDOWS INSTALLATION FOR MYSQL
+    sudo apt-get install mysql
+### MAC INSTALLATION FOR MYSQL
+    brew install mysql
 
-download venv
+It is recommended to use a virtual enviorment to setup dependencies for the project, but not required.
 
+## Install all dependencies 
+pip install -r requirements.txt
 
-run python -m venv (enviorment_name)
-./(enviorment_name)/Scripts/activate
+#Run the program using the following command 
+#(replace mysqlUsername and mysqlpassword with your own credentials): 
+
+python app.py -u <mysqlUsername> -p <mysqlpassword>
+    
+    
+    
+### --------------------------------------------------------------------------------------------------------------------------
+## Setting up a virtual Enviorment
+## This is an optional step. The program should work as long as the correct versions of dependencies are installed.
+## Windows users might have to download PIP in order to setup a virtual env
+  PIP can be installed by following the instructions at : https://www.liquidweb.com/kb/install-pip-windows/
+ 
+1.a) Installing virtualenv on Windows
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+cd <into directory where the file was downloaded>
+Python get-pip.py
+pip install virtualenv
+run python -m venv venv
+./venv/Scripts/activate
 
 2. Installing virtualenv on MAC / Linux
   a. pip install virtualenv
   b. cd into base directory of project 
   c. virtualenv venv
   d. source venv/bin/activate
-
-# Install requirements
-pip install -r requirements.txt
-
-#Run the program using the following command 
-#( replace mysqlUsername and mysqlpassword with your own credentials): 
-
-python app.py -u <mysqlUsername> -p <mysqlpassword>
