@@ -1,7 +1,7 @@
 {% extends 'login/base.html' %} 
 
 {% block title%}
-Registeration Page
+Registration Page
 {% endblock %}
 
 {% block cssloads %}
@@ -25,18 +25,7 @@ Registeration Page
 								action="{{ url_for('register') }}"
 								method="post"
 								autocomplete="off">
-								<div class="form-outline mb-4">
-									<div class="form-outline">
-										<input
-											type="text"
-											id="form3Example1"
-											class="form-control"
-											name="volunteer-id" />
-										<label class="form-label" for="form3Example1"
-											>Volunteer ID
-										</label>
-									</div>
-								</div>
+								
 								<div class="form-outline mb-4">
 									<input
 										type="text"
