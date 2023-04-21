@@ -11,7 +11,7 @@ def register_admin (mysql):
         # Create variables for easy access
         username = request.form['username']
         password = request.form['password']
-        volunteer_id = request.form['volunteer-id']
+        
         # Check if account exists using MySQL
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM administrator WHERE user_name = %s', (username,))
@@ -19,11 +19,9 @@ def register_admin (mysql):
         # If account exists show error and validation checks
         if account:
             msg = 'Account already exists!'
-        elif not re.match(r'[0-9]+', volunteer_id):
-            msg = 'Volunteer ID can only be Numeric '
         elif not re.match(r'[A-Za-z0-9]+', username):
             msg = 'Username must contain only characters and numbers!'
-        elif not username or not password or not volunteer_id:
+        elif not username or not password :
             msg = 'Please fill out the form!'
         else:
             # Account doesnt exists and the form data is valid, now insert new account into admin table

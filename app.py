@@ -310,7 +310,6 @@ def approveRequest(user):
         print(pendingRequests)
         mysql.connection.commit()
         cursor.close()
-        table_columns= list(pendingRequests[0].keys())
         table_columns = ["Request id","inventory_id","hospital_id","bag_id","requested","received"]
         msg = ""
         if(request.method == "POST"):
